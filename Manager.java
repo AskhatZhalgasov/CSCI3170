@@ -16,12 +16,12 @@ public class Manager {
         this.in = in;
     }
 
-    public start() {
+    public void start() {
         System.out.println("Manager, what would you like to do?");
         System.out.println("1. Find trips");
         System.out.println("2. Go back");
 
-        whilte(true) {
+        while(true) {
             System.out.println("Please enter[1-2]");
             input = in.nextInt();
             if (1 <= input && input <= 2) {

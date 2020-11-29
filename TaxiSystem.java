@@ -27,9 +27,10 @@ public class TaxiSystem {
     public void start() {
         int input;
         while((input = getInput()) != 5) {
-            System.out.println("input : " + input);
+            //System.out.println("input : " + input);
             switch(input) {
                 case 1:
+                    (new Administrator(conn, in)).start();
                     break;
                 case 2:
                     break;
