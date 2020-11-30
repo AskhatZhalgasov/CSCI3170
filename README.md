@@ -15,7 +15,7 @@
 
 ## TODOs
 * **Askhat**:
-    * Finish the load data function.
+    * N/A.
 * **Manu**:
     * Finish the passenger functionality (`Passenger.java`).
 * **Sherali**:

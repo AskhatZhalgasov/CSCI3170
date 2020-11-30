@@ -9,12 +9,12 @@ public class Administrator {
     int input;
 
     final String[] names = {
-            "vehicles",
-            "passengers",
-            "drivers",
-            "trips",
-            "requests",
-            "taxi_stops", 
+        "vehicles",
+        "passengers",
+        "drivers",
+        "trips",
+        "requests",
+        "taxi_stops", 
     };
  
 
@@ -102,8 +102,6 @@ public class Administrator {
 
         System.out.println("Processing...Data is loaded!\n");
     }
-
-
 
     private void loadDriversData(String filePath) throws Exception {
         PreparedStatement stmt = conn.prepareStatement("insert into drivers (id, name, vehicle_id, driving_years) values (?, ?, ?, ?)");
