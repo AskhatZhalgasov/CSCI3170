@@ -8,6 +8,16 @@ public class Administrator {
     final Scanner in;
     int input;
 
+    final String[] names = {
+            "vehicles",
+            "passengers",
+            "drivers",
+            "trips",
+            "requests",
+            "taxi_stops", 
+    };
+ 
+
     public Administrator(Connection conn, Scanner in) {
         this.conn = conn;
         this.in = in;
@@ -49,7 +59,8 @@ public class Administrator {
                 conn.prepareStatement("create table drivers ( id integer not null primary key, name varchar(30) not null, vehicle_id char(6) not null, driving_years integer not null );"),
                 conn.prepareStatement("create table passengers ( id integer not null primary key, name varchar(30) not null );"),
                 conn.prepareStatement("create table taxi_stops ( name varchar(20) not null primary key, x integer not null, y integer not null );"),
-                conn.prepareStatement("create table trip ( id integer not null primary key, driver_id integer not null, passenger_id integer not null, start_time date not null, finish_time date, start_location varchar(20) not null, finish_location varchar(20) not null, fee integer not null );")
+                conn.prepareStatement("create table trips ( id integer not null primary key, driver_id integer not null, passenger_id integer not null, start_time date not null, finish_time date, start_location varchar(20) not null, finish_location varchar(20) not null, fee integer not null );"),
+                conn.prepareStatement("create table requests ( id integer not null primary key, taken integer not null, model varchar(30), passengers integer not null, start_location varchar(20) not null, finish_location varchar(20) not null);")
             };
 
             for (int i = 0; i < stmts.length; i++) {
@@ -59,33 +70,74 @@ public class Administrator {
             System.out.println("[ERROR] " + e);
             System.exit(1);
         }
-        System.out.println("Processing... Done! Tables are created!");
+        System.out.println("Processing... Done! Tables are created!\n");
     }
 
     private void deleteTables() {
-        String[] names = {
-            "vehicles",
-            "drivers",
-            "trip",
-            "taxi_stops", 
-            "passengers"
-        };
         try {
-            for (int i = 0; i < names.length; i++) {
-                PreparedStatement stmt = conn.prepareStatement("drop table if exists " + names[i]);
+            for (String name : this.names) {
+                PreparedStatement stmt = conn.prepareStatement("drop table if exists " + name);
                 stmt.execute();
             }
         } catch(SQLException e) {
             System.out.println("[ERROR] " + e);
             System.exit(1);
         }
-        System.out.println("Processing... Done! Tables are deleted");
+        System.out.println("Processing... Done! Tables are deleted\n");
     }
 
     private void loadData() {
+        System.out.println("Please enter the folder path");
+        String folderPath = in.nextLine();
+
+        try {
+            loadDriversData(folderPath + "/drivers.csv");
+            loadPassengersData(folderPath + "/passengers.csv");
+            loadTaxiStopsData(folderPath + "taxi_stops.csv");
+            loadTripsData(folderPath + "/trips.csv");
+            loadVehiclesData(folderPath + "/vehicles.csv");
+        } catch(SQLException e) {
+            System.out.println("[ERROR] " + e);
+        }
+
+        System.out.println("Processing...Data is loaded!\n");
+    }
+
+    private void loadDriversData(String filePath) throws SQLException {
+
+    }
+
+    private void loadVehiclesData(String filePath) throws SQLException {
+
+    }
+
+    private void loadPassengersData(String filePath) throws SQLException {
+
+    }
+
+    private void loadTripsData(String filePath) throws SQLException {
+
+    }
+
+    private void loadTaxiStopsData(String filePath) throws SQLException {
+
     }
 
     private void checkData() {
-
+        String[] output = { "Vehicles:", "Passenger:", "Driver:", "Trip:", "Request:", "Taxi_Stop:" };
+        try {
+            PreparedStatement stmt;
+            for (int i = 0; i < output.length; i++) {
+                stmt = conn.prepareStatement("select count(*) from " + this.names[i]);
+                ResultSet query = stmt.executeQuery();
+                query.next();
+                int result = query.getInt(1);
+                System.out.println(output[i] + result);
+            }
+            System.out.println();
+        } catch(SQLException e) {
+            System.out.println("[ERROR] Cannot query the size of tables, probably the tables do not exist.");
+            System.exit(1);
+        }
     }
 }
