@@ -13,3 +13,10 @@
     make run
 ```
 
+## TODOs
+* **Askhat**:
+    * Finish the load data function.
+* **Manu**:
+    * Finish the passenger functionality (`Passenger.java`).
+* **Sherali**:
+    * Start the manager and driver (see `Manager.java & Driver.java`)
