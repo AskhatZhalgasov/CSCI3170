@@ -88,39 +88,106 @@ public class Administrator {
 
     private void loadData() {
         System.out.println("Please enter the folder path");
-        String folderPath = in.nextLine();
+        String folderPath = in.next();
 
         try {
             loadDriversData(folderPath + "/drivers.csv");
             loadPassengersData(folderPath + "/passengers.csv");
-            loadTaxiStopsData(folderPath + "taxi_stops.csv");
+            loadTaxiStopsData(folderPath + "/taxi_stops.csv");
             loadTripsData(folderPath + "/trips.csv");
             loadVehiclesData(folderPath + "/vehicles.csv");
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println("[ERROR] " + e);
         }
 
         System.out.println("Processing...Data is loaded!\n");
     }
 
-    private void loadDriversData(String filePath) throws SQLException {
 
+
+    private void loadDriversData(String filePath) throws Exception {
+        PreparedStatement stmt = conn.prepareStatement("insert into drivers (id, name, vehicle_id, driving_years) values (?, ?, ?, ?)");
+
+        Scanner scanner = new Scanner(new File(filePath));
+        while(scanner.hasNext()) {
+            String[] values = (scanner.nextLine()).split(",");
+
+            for (int i = 0; i < values.length; i++) {
+                stmt.setString(i + 1, values[i]);
+            }
+
+            stmt.execute();
+        }
+
+        System.out.println("Drivers data is loaded...");
     }
 
-    private void loadVehiclesData(String filePath) throws SQLException {
+    private void loadVehiclesData(String filePath) throws Exception {
+        PreparedStatement stmt = conn.prepareStatement("insert into vehicles (id, model, seats) values (?, ?, ?)");
 
+        Scanner scanner = new Scanner(new File(filePath));
+        while(scanner.hasNext()) {
+            String[] values = (scanner.nextLine()).split(",");
+
+            for (int i = 0; i < values.length; i++) {
+                stmt.setString(i + 1, values[i]);
+            }
+
+            stmt.execute();
+        }
+
+        System.out.println("Vehicles data is loaded...");
     }
 
-    private void loadPassengersData(String filePath) throws SQLException {
+    private void loadPassengersData(String filePath) throws Exception {
+        PreparedStatement stmt = conn.prepareStatement("insert into passengers (id, name) values (?, ?)");
 
+        Scanner scanner = new Scanner(new File(filePath));
+        while(scanner.hasNext()) {
+            String[] values = (scanner.nextLine()).split(",");
+
+            for (int i = 0; i < values.length; i++) {
+                stmt.setString(i + 1, values[i]);
+            }
+
+            stmt.execute();
+        }
+
+        System.out.println("Passengers data is loaded...");
     }
 
-    private void loadTripsData(String filePath) throws SQLException {
+    private void loadTripsData(String filePath) throws Exception {
+        PreparedStatement stmt = conn.prepareStatement("insert into trips (id, driver_id, passenger_id, start_time, finish_time, start_location, finish_location, fee) values (?, ?, ?, ?, ?, ?, ?, ?)");
 
+        Scanner scanner = new Scanner(new File(filePath));
+        while(scanner.hasNext()) {
+            String[] values = (scanner.nextLine()).split(",");
+
+            for (int i = 0; i < values.length; i++) {
+                stmt.setString(i + 1, values[i]);
+            }
+
+            stmt.execute();
+        }
+
+        System.out.println("Trips data is loaded...");
     }
 
-    private void loadTaxiStopsData(String filePath) throws SQLException {
+    private void loadTaxiStopsData(String filePath) throws Exception {
+        PreparedStatement stmt = conn.prepareStatement("insert into taxi_stops (name, x, y) values (?, ?, ?)");
 
+        Scanner scanner = new Scanner(new File(filePath));
+        while(scanner.hasNext()) {
+            String[] values = (scanner.nextLine()).split(",");
+
+            for (int i = 0; i < values.length; i++) {
+                stmt.setString(i + 1, values[i]);
+            }
+
+            stmt.execute();
+        }
+
+        System.out.println("Taxi stops data is loaded...");
     }
 
     private void checkData() {
