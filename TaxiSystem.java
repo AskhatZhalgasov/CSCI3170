@@ -33,6 +33,7 @@ public class TaxiSystem {
                     (new Administrator(conn, in)).start();
                     break;
                 case 2:
+                    (new Passenger(conn, in)).start();
                     break;
                 case 3:
                     break;

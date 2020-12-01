@@ -41,7 +41,6 @@ public class Passenger {
     }
     public void make_request()
     {
-            /* не уверен насчет пропуска 2 последних вводов */
         int p_id, pnum, d_years;
         String start_loc, end_loc, model;
         String dd_years;
@@ -49,6 +48,7 @@ public class Passenger {
         p_id = in.nextInt();
         System.out.println("Please enter the number of passengers.");
         pnum = in.nextInt();
+        in.nextLine();
         System.out.println("Please enter the start location.");
         start_loc = in.nextLine();
         System.out.println("Please enter the destination.");
@@ -57,22 +57,21 @@ public class Passenger {
         model = in.nextLine();
         System.out.println("Please enter the minimum driving years of the driver. (Press enter to skip)");
         dd_years = in.nextLine();
-        if (dd_years.charAt(0) == '\n')
+        if (dd_years.length()==0)
             d_years = 0;
         else
             d_years = Integer.parseInt(dd_years);
         PreparedStatement stmt;
         try 
         {
-            /* короче тут надо немного над querry поработать, не тестировал */
-            if (model != "\n") {
+            if (model.length()!=0) {
                 stmt = conn.prepareStatement(
-                        "select (*) from driver full join vehicle on driver.vehicle_id = vehicle.id count(*) where seats >="
-                                + pnum + "and driving_years >= " + d_years + " and model like " + model);
+                        "select count(case when vehicle.seats >="
+                                + pnum + " and driver.driving_years>=" + d_years + " and vehicle.model like '" + model + "' then 1 else null end) as num from driver full join vehicle on driver.vehicle_id = vehicle.id");
             } else {
                 stmt = conn.prepareStatement(
-                        "select (*) from driver full join vehicle on driver.vehicle_id = vehicle.id count(*) where seats >="
-                                + pnum + "and driving_years >= " + d_years);
+                        "select count(case when vehicle.seats >="
+                                + pnum + " and driver.driving_years>=" + d_years + " then 1 else null end) as num from driver full join vehicle on driver.vehicle_id = vehicle.id");
             }
             ResultSet res = stmt.executeQuery();
             res.next();
@@ -88,41 +87,49 @@ public class Passenger {
     public void check_trip()
     {
         int id;
-        SimpleDateFormat dateFormat=new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");
-        Date start_time=null,end_time=null;
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date x=new Date();
+        Timestamp start_time, finish_time;
         String date, destination;
         System.out.println("Please enter your ID.");
         id = in.nextInt();
+        in.nextLine();
         System.out.println("Please enter the start date.");
         date = in.nextLine();
         date += " 00:00:00";
+        
         try
         {
-            start_time=dateFormat.parse(date);
+            x=dateFormat.parse(date);
         }
         catch (ParseException e)
         {
             e.printStackTrace();
         }
+        System.out.println(x);
+        start_time = new Timestamp(x.getTime());
         System.out.println("Please enter the end date.");
         date = in.nextLine();
         date += " 23:59:59";
         try
         {
-            end_time=dateFormat.parse(date);
+           x=dateFormat.parse(date);
         }
         catch (ParseException e)
         {
             e.printStackTrace();
         }
+        System.out.println("-------------"+date);
+        System.out.println(x);
+        finish_time=new Timestamp(x.getTime());
         System.out.println("Please enter the destination.");
         destination = in.nextLine();
         PreparedStatement stmt;
         try 
         {
-            /* не тестировал */
+            //надо протестировать
                 stmt = conn.prepareStatement(
-                        "select * from trip where passenger_id = " + id + " and start_time >= " + start_time + " and end_time <= " + end_time);
+                        "select * from trips where passenger_id=" + id + " and timestampdiff(DAY,\'"+start_time+"\',start_time)>0 and timestampdiff(DAY,\'"+finish_time+"\',finish_time)>0");
                 stmt.execute();
         }
         catch(SQLException e)
