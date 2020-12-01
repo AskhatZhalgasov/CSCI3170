@@ -72,10 +72,10 @@ public class Passenger {
         {
             if (model.length()!=0) {
                 stmt2 = conn.prepareStatement(
-                        "insert into requests values (" + Main.req_id + ",0,"+ model + "," + pnum + "," + start_loc + "," + end_loc + "," + "0)"); 
+                        "insert into requests (id,taken,model,passengers,start_location,finish_location) values (" + Main.req_id + ",0,"+ model + "," + pnum + "," + start_loc + "," + end_loc + ",)"); 
             } else {
                 stmt2 = conn.prepareStatement(
-                    "insert into requests values (" + Main.req_id + ",0," + ",null," + pnum + "," + start_loc + "," + end_loc + ")");
+                    "insert into requests (id,taken,model,passengers,start_location,finish_location) values (" + Main.req_id + ",0," + ",null," + pnum + "," + start_loc + "," + end_loc + ")");
             }
             Main.req_id++;
         }
