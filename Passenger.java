@@ -55,7 +55,7 @@ public class Passenger {
         end_loc = in.nextLine();
         System.out.println("Please enter the model. (Press enter to skip)");
         model = in.nextLine();
-        System.out.println("Please enter the minimum driving years of the driver. (Press enter to skip)");
+        System.out.println("Please enter the minimum driving years of the drivers. (Press enter to skip)");
         dd_years = in.nextLine();
         if (dd_years.length()==0)
             d_years = 0;
@@ -66,12 +66,12 @@ public class Passenger {
         {
             if (model.length()!=0) {
                 stmt = conn.prepareStatement(
-                        "select count(case when vehicle.seats >="
-                                + pnum + " and driver.driving_years>=" + d_years + " and vehicle.model like '" + model + "' then 1 else null end) as num from driver full join vehicle on driver.vehicle_id = vehicle.id");
+                        "select count(case when vehicles.seats >="
+                                + pnum + " and drivers.driving_years>=" + d_years + " and vehicles.model like '" + model + "' then 1 else null end) as num from drivers full join vehicles on drivers.vehicles_id = vehicles.id");
             } else {
                 stmt = conn.prepareStatement(
-                        "select count(case when vehicle.seats >="
-                                + pnum + " and driver.driving_years>=" + d_years + " then 1 else null end) as num from driver full join vehicle on driver.vehicle_id = vehicle.id");
+                        "select count(case when vehicles.seats >="
+                                + pnum + " and drivers.driving_years>=" + d_years + " then 1 else null end) as num from drivers full join vehicles on drivers.vehicles_id = vehicles.id");
             }
             ResultSet res = stmt.executeQuery();
             res.next();
