@@ -9,7 +9,6 @@ public class Passenger {
     final Connection conn;
     final Scanner in;
     int input;
-
     public Passenger(Connection conn, Scanner in) {
         this.conn = conn;
         this.in = in;
@@ -61,7 +60,23 @@ public class Passenger {
             d_years = 0;
         else
             d_years = Integer.parseInt(dd_years);
-        PreparedStatement stmt;
+        PreparedStatement stmt,stmt2;
+        try
+        {
+            if (model.length()!=0) {
+                stmt2 = conn.prepareStatement(
+                        "insert into requests values (" + Main.req_id + ",0,"+ model + "," + pnum + "," + start_loc + "," + end_loc + "," + "0)"); 
+            } else {
+                stmt2 = conn.prepareStatement(
+                    "insert into requests values (" + Main.req_id + ",0," + ",null," + pnum + "," + start_loc + "," + end_loc + ")");
+            }
+            Main.req_id++;
+        }
+        catch (SQLException e) 
+        {
+            System.out.println("[ERROR] " + e);
+            System.exit(1);
+        }
         try 
         {
             if (model.length()!=0) {

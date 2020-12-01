@@ -1,9 +1,8 @@
 import java.sql.*;
 
 public class Main {
-
+    public static int req_id;
     public static void main(String[] args) {
-
         // Firstly, need to connect to the database 
         String dbAddress = "jdbc:mysql://projgw.cse.cuhk.edu.hk:2633/group14";
         String dbUsername = "Group14";
