@@ -51,7 +51,14 @@ public class Passenger {
         System.out.println("Please enter the start location.");
         start_loc = in.nextLine();
         System.out.println("Please enter the destination.");
-        end_loc = in.nextLine();
+        while (true)
+        {
+            end_loc = in.nextLine();
+            if (end_loc == start_loc)
+            System.out.println("[ERROR] destination and start location should be different.");
+            else
+            break;
+        }
         System.out.println("Please enter the model. (Press enter to skip)");
         model = in.nextLine();
         System.out.println("Please enter the minimum driving years of the drivers. (Press enter to skip)");
@@ -82,11 +89,11 @@ public class Passenger {
             if (model.length()!=0) {
                 stmt = conn.prepareStatement(
                         "select count(case when vehicles.seats >="
-                                + pnum + " and drivers.driving_years>=" + d_years + " and vehicles.model like '" + model + "' then 1 else null end) as num from drivers full join vehicles on drivers.vehicles_id = vehicles.id");
+                                + pnum + " and driving_years>=" + d_years + " and vehicles.model like \'" + model + "\' then 1 else null end) as num from drivers full join vehicles on vehicle_id=vehicles.id");
             } else {
                 stmt = conn.prepareStatement(
                         "select count(case when vehicles.seats >="
-                                + pnum + " and drivers.driving_years>=" + d_years + " then 1 else null end) as num from drivers full join vehicles on drivers.vehicles_id = vehicles.id");
+                                + pnum + " and driving_years>=" + d_years + " then 1 else null end) as num from drivers full join vehicles on vehicle_id=vehicles.id");
             }
             ResultSet res = stmt.executeQuery();
             res.next();
