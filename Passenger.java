@@ -53,9 +53,9 @@ public class Passenger {
         start_loc = in.nextLine();
         System.out.println("Please enter the destination.");
         end_loc = in.nextLine();
-        System.out.println("Please enter the model. (Prees enter to skip)");
+        System.out.println("Please enter the model. (Press enter to skip)");
         model = in.nextLine();
-        System.out.println("Please enter the minimum driving years of the driver. (Prees enter to skip)");
+        System.out.println("Please enter the minimum driving years of the driver. (Press enter to skip)");
         dd_years = in.nextLine();
         if (dd_years.charAt(0) == '\n')
             d_years = 0;
