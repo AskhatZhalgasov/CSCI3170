@@ -72,25 +72,25 @@ public class Passenger {
         {
             if (model.length()!=0) {
                 stmt2 = conn.prepareStatement(
-                        "insert into requests (taken,model,driving_years,passenger_id,passengers,start_location,finish_location) values (0," +  model + "," + d_years + "," + p_id + "," + pnum + ",\"" + start_loc + "\",\"" + end_loc + "\",)"); 
+                        "insert into requests (taken,model,driving_years,passenger_id,passengers,start_location,finish_location) values (0,\'" +  model + "\'," + d_years + "," + p_id + "," + pnum + ",\'" + start_loc + "\',\'" + end_loc + "\')"); 
             } else {
                 stmt2 = conn.prepareStatement(
-                    "insert into requests (taken,model,driving_years,passenger_id,passengers,start_location,finish_location) values (0,null," + d_years + "," + p_id + "," + pnum + ",\"" + start_loc + "\",\"" + end_loc + "\")");
+                    "insert into requests (taken,model,driving_years,passenger_id,passengers,start_location,finish_location) values (0,null," + d_years + "," + p_id + "," + pnum + ",\'" + start_loc + "\',\'" + end_loc + "\')");
             }
             stmt2.execute();
-            Main.req_id++;
         }
         catch (SQLException e) 
         {
-            System.out.println("[ERROR] " + e);
+            System.out.println("[ERROR 1] " + e);
             System.exit(1);
         }
+       // System.out.println("second one ");
         try 
         {
             if (model.length()!=0) {
                 stmt = conn.prepareStatement(
                         "select count(case when vehicles.seats >="
-                                + pnum + " and driving_years>=" + d_years + " and vehicles.model like \'" + model + "\' then 1 else null end) as num from drivers full join vehicles on vehicle_id=vehicles.id");
+                                + pnum + " and driving_years>=" + d_years + " and vehicles.model like \'%" + model + "%\' then 1 else null end) as num from drivers full join vehicles on vehicle_id=vehicles.id");
             } else {
                 stmt = conn.prepareStatement(
                         "select count(case when vehicles.seats >="
@@ -99,11 +99,11 @@ public class Passenger {
             ResultSet res = stmt.executeQuery();
             res.next();
             int count = res.getInt(1);
-            System.out.println("Your request is placed. " + count + " are able to take request.");
+            System.out.println("Your request is placed. " + count + "drivers are able to take request.");
         } 
         catch (SQLException e) 
         {
-            System.out.println("[ERROR] " + e);
+            System.out.println("[ERROR 2] " + e);
             System.exit(1);
         }
     }
@@ -120,7 +120,6 @@ public class Passenger {
         System.out.println("Please enter the start date.");
         date = in.nextLine();
         date += " 00:00:00";
-        
         try
         {
             x=dateFormat.parse(date);
@@ -129,7 +128,7 @@ public class Passenger {
         {
             e.printStackTrace();
         }
-        System.out.println(x);
+        //System.out.println(x);
         start_time = new Timestamp(x.getTime());
         System.out.println("Please enter the end date.");
         date = in.nextLine();
@@ -142,22 +141,22 @@ public class Passenger {
         {
             e.printStackTrace();
         }
-        System.out.println("-------------"+date);
-        System.out.println(x);
+        //System.out.println("-------------"+date);
+        //System.out.println(x);
         finish_time=new Timestamp(x.getTime());
         System.out.println("Please enter the destination.");
         destination = in.nextLine();
         PreparedStatement stmt;
         try 
         {
-            //надо протестировать
                 stmt = conn.prepareStatement(
                         "select * from trips where passenger_id=" + id + " and timestampdiff(DAY,\'"+start_time+"\',start_time)>0 and timestampdiff(DAY,\'"+finish_time+"\',finish_time)>0");
                 stmt.execute();
         }
         catch(SQLException e)
         {
-            System.out.println(e);
+            System.out.println("[ERROR 3] " + e);
+            System.exit(1);
         }
     }
 }
