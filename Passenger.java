@@ -81,7 +81,7 @@ public class Passenger {
         }
         catch (SQLException e) 
         {
-            System.out.println("[ERROR 1] " + e);
+            System.out.println("[ERROR] " + e);
             System.exit(1);
         }
        // System.out.println("second one ");
@@ -90,11 +90,11 @@ public class Passenger {
             if (model.length()!=0) {
                 stmt = conn.prepareStatement(
                         "select count(case when vehicles.seats >="
-                                + pnum + " and driving_years>=" + d_years + " and vehicles.model like \'%" + model + "%\' then 1 else null end) as num from drivers full join vehicles on vehicle_id=vehicles.id");
+                                + pnum + " and driving_years>=" + d_years + " and vehicles.model like \'%" + model + "%\' then 1 else null end) as num from drivers cross join vehicles on vehicle_id=vehicles.id");
             } else {
                 stmt = conn.prepareStatement(
                         "select count(case when vehicles.seats >="
-                                + pnum + " and driving_years>=" + d_years + " then 1 else null end) as num from drivers full join vehicles on vehicle_id=vehicles.id");
+                                + pnum + " and driving_years>=" + d_years + " then 1 else null end) as num from drivers cross join vehicles on vehicle_id=vehicles.id");
             }
             ResultSet res = stmt.executeQuery();
             res.next();
@@ -103,16 +103,14 @@ public class Passenger {
         } 
         catch (SQLException e) 
         {
-            System.out.println("[ERROR 2] " + e);
+            System.out.println("[ERROR] " + e);
             System.exit(1);
         }
     }
     public void check_trip()
     {
         int id;
-        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date x=new Date();
-        Timestamp start_time, finish_time;
+        String start_time, finish_time;
         String date, destination;
         System.out.println("Please enter your ID.");
         id = in.nextInt();
@@ -120,7 +118,8 @@ public class Passenger {
         System.out.println("Please enter the start date.");
         date = in.nextLine();
         date += " 00:00:00";
-        try
+        start_time=date;
+        /*try
         {
             x=dateFormat.parse(date);
         }
@@ -130,10 +129,12 @@ public class Passenger {
         }
         //System.out.println(x);
         start_time = new Timestamp(x.getTime());
+        */
         System.out.println("Please enter the end date.");
         date = in.nextLine();
         date += " 23:59:59";
-        try
+        finish_time=date;
+        /*try
         {
            x=dateFormat.parse(date);
         }
@@ -144,19 +145,44 @@ public class Passenger {
         //System.out.println("-------------"+date);
         //System.out.println(x);
         finish_time=new Timestamp(x.getTime());
+        */
         System.out.println("Please enter the destination.");
         destination = in.nextLine();
+        System.out.println(destination);
         PreparedStatement stmt;
         try 
         {
+                String st1,st2;
+                st1="select T.id,D.name,V.id,V.model,start_time,finish_time,fee,start_location,finish_location ";
+                st2="from trips as T cross join drivers as D on driver_id = D.id cross join vehicles as V on D.vehicle_id like V.id ";
                 stmt = conn.prepareStatement(
-                        "select * from trips where passenger_id=" + id + " and timestampdiff(DAY,\'"+start_time+"\',start_time)>0 and timestampdiff(DAY,\'"+finish_time+"\',finish_time)>0");
-                stmt.execute();
+                        st1+st2+"where T.passenger_id=" + id + " and timestampdiff(DAY,\'"+start_time+"\',T.start_time)>0 and timestampdiff(DAY,T.finish_time,\'"+finish_time+"\')>0 and T.finish_location like \'" + destination + "\'");                
+                ResultSet res = stmt.executeQuery();
+                ResultSetMetaData rsmd = res.getMetaData();
+                int columnsNumber = rsmd.getColumnCount();
+                System.out.println("Trip id, Driver Name , Vehicle ID, Vehicle Model, Start, End, Fee, Start Location, Destination");
+                while (res.next()) {
+                    for (int i = 1; i <= columnsNumber; i++) {
+                        if (i > 1) System.out.print(",  ");
+                        String columnValue;
+                        columnValue = res.getString(i);
+                        System.out.print(columnValue);
+                    }
+                    System.out.println("");
+                }
         }
         catch(SQLException e)
         {
-            System.out.println("[ERROR 3] " + e);
+            System.out.println("[ERROR1] " + e);
             System.exit(1);
         }
     }
 }
+/*
+2
+2
+1
+2018-01-01
+2018-12-31
+Sham Shui Po
+*/
