@@ -15,7 +15,7 @@ public class Passenger {
     }
     public void start() {
         System.out.println("Passenger, what would you like to do?");
-        System.out.println("1. Reques a ride");
+        System.out.println("1. Request a ride");
         System.out.println("2. Check trip records");
         System.out.println("3. Go back");
 
@@ -72,11 +72,12 @@ public class Passenger {
         {
             if (model.length()!=0) {
                 stmt2 = conn.prepareStatement(
-                        "insert into requests (id,taken,model,passengers,start_location,finish_location) values (" + Main.req_id + ",0,"+ model + "," + pnum + "," + start_loc + "," + end_loc + ",)"); 
+                        "insert into requests (taken,model,driving_years,passenger_id,passengers,start_location,finish_location) values (0," +  model + "," + d_years + "," + p_id + "," + pnum + ",\"" + start_loc + "\",\"" + end_loc + "\",)"); 
             } else {
                 stmt2 = conn.prepareStatement(
-                    "insert into requests (id,taken,model,passengers,start_location,finish_location) values (" + Main.req_id + ",0," + ",null," + pnum + "," + start_loc + "," + end_loc + ")");
+                    "insert into requests (taken,model,driving_years,passenger_id,passengers,start_location,finish_location) values (0,null," + d_years + "," + p_id + "," + pnum + ",\"" + start_loc + "\",\"" + end_loc + "\")");
             }
+            stmt2.execute();
             Main.req_id++;
         }
         catch (SQLException e) 

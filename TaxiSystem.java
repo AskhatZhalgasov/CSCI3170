@@ -36,6 +36,7 @@ public class TaxiSystem {
                     (new Passenger(conn, in)).start();
                     break;
                 case 3:
+                    (new Driver(conn, in)).start();
                     break;
                 case 4:
                     (new Manager(conn, in)).start();
