@@ -59,7 +59,7 @@ public class Administrator {
                 conn.prepareStatement("create table drivers ( id integer not null primary key, name varchar(30) not null, vehicle_id char(6) not null, driving_years integer not null );"),
                 conn.prepareStatement("create table passengers ( id integer not null primary key, name varchar(30) not null );"),
                 conn.prepareStatement("create table taxi_stops ( name varchar(20) not null primary key, x integer not null, y integer not null );"),
-                conn.prepareStatement("create table trips ( id integer not null primary key, driver_id integer not null, passenger_id integer not null, start_time timestamp not null, finish_time timestamp, start_location varchar(20) not null, finish_location varchar(20) not null, fee integer not null );"),
+                conn.prepareStatement("create table trips ( id integer not null primary key, driver_id integer not null, passenger_id integer not null, start_time timestamp not null, finish_time timestamp null default null, start_location varchar(20) not null, finish_location varchar(20) not null, fee integer not null );"),
                 conn.prepareStatement("create table requests ( id integer not null primary key, taken integer not null, model varchar(30), driving_years integer not null, passenger_id integer not null, passengers integer not null, start_location varchar(20) not null, finish_location varchar(20) not null);"),
                 conn.prepareStatement("alter table requests modify id integer not null auto_increment, auto_increment=1"),
                 conn.prepareStatement("alter table trips modify id integer not null auto_increment, auto_increment=501")

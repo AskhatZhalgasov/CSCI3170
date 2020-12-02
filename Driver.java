@@ -40,7 +40,7 @@ public class Driver {
         }
         else if (input == 3)
         {
-            //finish_trip();
+            finish_trip();
         }
 
     }
@@ -62,7 +62,26 @@ public class Driver {
         max_distance = in.nextInt();
         try
         {
-            PreparedStatement stmt = conn.prepareStatement("select R.id, P.name, R.passengers, R.start_location, R.finish_location from requests as R, taxi_stops as TS, taxi_stops as TT, passengers as P where ");
+            //PreparedStatement stmt = conn.prepareStatement("select R.id, P.name, R.passengers, R.start_location, R.finish_location from requests as R, taxi_stops as TS, taxi_stops as TT, passengers as P, drivers as D, vehicles as V where D.id = " + d_id + " and D.vehicle_id = V.id and TS.name = R.start_location and (ABS(TS.x - " + start_loc_x + ") + ABS(TS.y - " + start_loc_y + ")) between 0 and " + max_distance + " and D.driving_years > R.driving_years and (R.model = \"null\" )");
+            PreparedStatement stmt = conn.prepareStatement("select R.id, P.name, R.passengers, R.start_location, R.finish_location from requests as R, taxi_stops as TS, passengers as P, drivers as D, vehicles as V where D.id = " + d_id + " and P.id = R.passenger_id and D.vehicle_id = V.id and TS.name = R.start_location and (ABS(TS.x - " + start_loc_x + ") + ABS(TS.y - " + start_loc_y + ")) between 0 and " + max_distance + " and D.driving_years > R.driving_years and (R.model is NULL or R.model like V.model)");          
+            //System.out.println("select R.id, P.name, R.passengers, R.start_location, R.finish_location from requests as R, taxi_stops as TS, taxi_stops as TT, passengers as P, drivers as D, vehicles as V where D.id = " + d_id + " and P.id = R.passenger_id and D.vehicle_id = V.id and TS.name = R.start_location and (ABS(TS.x - " + start_loc_x + ") + ABS(TS.y - " + start_loc_y + ")) between 0 and " + max_distance + " and D.driving_years > R.driving_years and (R.model = \"null\" or R.model = V.model )");
+            //PreparedStatement stmt = conn.prepareStatement("select * from requests");
+            ResultSet res = stmt.executeQuery();
+            ResultSetMetaData rsmd = res.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            //int rowCount = rsmd.getRowCount();
+            //System.out.println(columnsNumber);
+            //System.out.println("trip id, driver name, passenger name, start location, destination, duration");
+            System.out.println("request ID, passenger name, num of passengers, start location, destination");
+            while (res.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print(",  ");
+                    String columnValue;              
+                    columnValue = res.getString(i);
+                    System.out.print(columnValue);
+                }
+                System.out.println("");
+            }
         } 
         catch (SQLException e) 
         {
@@ -108,10 +127,11 @@ public class Driver {
             //System.out.println(model);
             //System.out.println("" + vh_capacity + ", " + passengers_num + ", " + dr_years + ", " + dr_years_required + ", " +  isNullOrEmpty(model_required) + ", " + model_required.length() + ", " + model_required.equals("null") );
             if(vh_capacity >= passengers_num && dr_years >= dr_years_required && (model_required.equals("null") || model_required.equals(model))) {
-                System.out.println("Yes baby");
+                //System.out.println("Yes baby");
                 //                                                                                                                                                                                          2018-07-04 14:33:20
-                PreparedStatement stmt_tr = conn.prepareStatement("insert into trips (driver_id,passenger_id,start_time,start_location, finish_location, fee) values ("+ dr_id + "," + passenger_id + ",\"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\",\"" + start_location + "\",\"" + finish_location + "\", 0)");   
+                PreparedStatement stmt_tr = conn.prepareStatement("insert into trips (driver_id,passenger_id,start_time, start_location, finish_location, fee) values ("+ dr_id + "," + passenger_id + ",\"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\",\"" + start_location + "\",\"" + finish_location + "\", 0)");   
                 stmt_tr.execute();
+                System.out.println("The request was taken! Enjoy your trip");
             }
         }
         catch (SQLException e) 
@@ -120,6 +140,55 @@ public class Driver {
             System.exit(1);
         }
 
+    }
+    public void finish_trip() {
+        int d_id;
+        System.out.println("Please enter your ID.");
+        d_id = in.nextInt();
+        try {
+            PreparedStatement stmt = conn.prepareStatement("select id, passenger_id, start_time from trips where driver_id = " + d_id + " and finish_time is NULL");
+            //PreparedStatement stmt = conn.prepareStatement("select * from trips where id = 501");
+            ResultSet res = stmt.executeQuery();
+            ResultSetMetaData rsmd = res.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            int r_id = 0;
+            StringBuffer start_time = new StringBuffer("");
+            System.out.println("Trip ID, Passenger ID, Start");
+            while (res.next()) {
+                r_id = res.getInt("id");
+                start_time.append(res.getString("start_time"));
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print(",  ");                    
+                    String columnValue;              
+                    columnValue = res.getString(i);
+                    System.out.print(columnValue);
+                }
+                System.out.println("");
+            }
+            System.out.println("Do you wish to finish the trip");
+            char answer = in.next().charAt(0);
+            if(answer == 'y') {
+                PreparedStatement stmt_finish_ = conn.prepareStatement("update trips set finish_time = \"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\", fee = TIMESTAMPDIFF(MINUTE, \"" + start_time + "\",\"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\") where id = " + r_id + "");
+                stmt_finish_.execute();
+                PreparedStatement stmt_finish = conn.prepareStatement("select * from trips where id = 502");
+                //System.out.println("update trips set finish_time = \"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\", fee = TIMESTAMPDIFF(MINUTE, start_time, \"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\") where trips.id = " + r_id + "");
+                ResultSet x = stmt_finish.executeQuery();
+                ResultSetMetaData _rsmd = x.getMetaData();
+                int _columnsNumber = _rsmd.getColumnCount();
+                while(x.next()) {
+                    for (int i = 1; i <= _columnsNumber; i++) {
+                    String _columnValue;              
+                    _columnValue = x.getString(i);
+                    System.out.print(_columnValue + " ");
+                    }
+                }
+            }
+            //UPDATE `zz` SET `sa` = '2' WHERE `zz`.`sa` = 1
+        } catch (SQLException e) 
+        {
+            System.out.println("[ERROR] " + e);
+            System.exit(1);
+        }
     }
     
 }
