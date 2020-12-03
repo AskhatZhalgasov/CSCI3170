@@ -21,7 +21,7 @@ public class TaxiSystem {
         System.out.println("5. None of the above");
         System.out.println("Please enter [1-4]");
 
-        return Main.getInput(this.in);
+        return Main.getInt(this.in);
     }
 
     public void start() {

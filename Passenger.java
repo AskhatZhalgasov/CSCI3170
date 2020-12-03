@@ -26,7 +26,7 @@ public class Passenger {
         while(true) {
             while (true) {
                 System.out.println("Please enter[1-3]");
-                input = Main.getInput(this.in);
+                input = Main.getInt(this.in);
                 if (1 <= input && input <= 3) {
                     break;
                 } else {
@@ -48,11 +48,11 @@ public class Passenger {
         String start_loc, end_loc, model;
         String dd_years;
         System.out.println("Please enter your ID.");
-        p_id = in.nextInt();
+        p_id = Main.getInt(this.in);
         System.out.println("Please enter the number of passengers.");
         while (true)
         {
-            pnum = in.nextInt();
+            pnum = Main.getInt(this.in);
             if (pnum>8)
                 System.out.println("[Error] Invalid number of passengers");
             else 
@@ -61,7 +61,7 @@ public class Passenger {
         in.nextLine();
         while (true) {
             System.out.println("Please enter the start location.");
-            start_loc = in.nextLine();
+            start_loc = Main.getLine(this.in);
             PreparedStatement stmtc;
             try {
                 stmtc = conn.prepareStatement("select count(case when name like \'" + start_loc
@@ -80,7 +80,7 @@ public class Passenger {
         }
         while (true) {
             System.out.println("Please enter the destination.");
-            end_loc = in.nextLine();
+            end_loc = Main.getLine(this.in);
             PreparedStatement stmtc;
             try {
                 stmtc = conn.prepareStatement("select count(case when name like \'" + end_loc
@@ -100,9 +100,9 @@ public class Passenger {
             }
         }
         System.out.println("Please enter the model. (Press enter to skip)");
-        model = in.nextLine();
+        model = Main.getLine(this.in);
         System.out.println("Please enter the minimum driving years of the drivers. (Press enter to skip)");
-        dd_years = in.nextLine();
+        dd_years = Main.getLine(this.in);
         if (dd_years.length() == 0)
             d_years = 0;
         else
@@ -150,18 +150,18 @@ public class Passenger {
         String start_time, finish_time;
         String date, destination;
         System.out.println("Please enter your ID.");
-        id = in.nextInt();
-        in.nextLine();
+        id = Main.getInt(this.in);
+        Main.getLine(this.in);
         System.out.println("Please enter the start date.");
-        date = in.nextLine();
+        date = Main.getLine(this.in);
         date += " 00:00:00";
         start_time=date;
         System.out.println("Please enter the end date.");
-        date = in.nextLine();
+        date = Main.getLine(this.in);
         date += " 23:59:59";
         finish_time=date;
         System.out.println("Please enter the destination.");
-        destination = in.nextLine();
+        destination = Main.getLine(this.in);
         PreparedStatement stmt;
         try 
         {

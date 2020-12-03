@@ -25,7 +25,7 @@ public class Driver {
 
             while(true) {
                 System.out.println("Please enter[1-4]");
-                input = Main.getInput(this.in);
+                input = Main.getInt(this.in);
                 if (1 <= input && input <= 3) {
                     break;
                 } else {

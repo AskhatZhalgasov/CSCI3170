@@ -5,16 +5,27 @@ public class Main {
     public static int req_id;
 
     // sometimes we finish the programm due to timeout
-    public static int getInput(Scanner in) {
+    public static int getInt(Scanner in) {
         int result = 0;
         try {
             result = in.nextInt();
             return result;
         } catch(Exception e) {
-            System.out.println("Finishing due to empty input.");
+            System.out.println("Finishing due to empty integer input.");
             System.exit(-1);
         }
         return -1;
+    }
+
+    public static String getLine(Scanner in) {
+        try {
+            String result = in.nextLine();
+            return result;
+        } catch(Exception e) {
+            System.out.println("Finishing due to empty string input.");
+            System.exit(-1);
+        }
+        return null;
     }
 
     public static void main(String[] args) {

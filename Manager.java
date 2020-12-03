@@ -27,7 +27,7 @@ public class Manager {
         while(true) {
             while(true) {
                 System.out.println("Please enter[1-2]");
-                input = Main.getInput(this.in);
+                input = Main.getInt(this.in);
                 if (1 <= input && input <= 2) {
                     break;
                 } else {

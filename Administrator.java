@@ -34,7 +34,7 @@ public class Administrator {
         while(true) {
             while(true) {
                 System.out.println("Please enter[1-5]");
-                input = Main.getInput(this.in);
+                input = Main.getInt(this.in);
                 if (1 <= input && input <= 5) {
                     break;
                 } else {
