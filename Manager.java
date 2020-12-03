@@ -58,7 +58,7 @@ public class Manager {
             return;
         }
         try {
-            PreparedStatement stmt = conn.prepareStatement("SELECT T.id, P.name, D.name, T.start_location, T.finish_location, TIMESTAMPDIFF(MINUTE, T.start_time, T.finish_time) as duration FROM trips T, taxi_stops TS, taxi_stops TT, drivers D, passengers P WHERE T.start_location = TS.name and P.id = T.passenger_id and T.finish_location = TT.name and T.driver_id = D.id and (ABS(TT.x - TS.x) + ABS(TT.y - TS.y)) between ? and ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT T.id, D.name, P.name, T.start_location, T.finish_location, TIMESTAMPDIFF(MINUTE, T.start_time, T.finish_time) as duration FROM trips T, taxi_stops TS, taxi_stops TT, drivers D, passengers P WHERE T.start_location = TS.name and P.id = T.passenger_id and T.finish_location = TT.name and T.driver_id = D.id and (ABS(TT.x - TS.x) + ABS(TT.y - TS.y)) between ? and ?");
             //, DATEDIFF(minute, T.finish_time, T.start_time) as duration
             stmt.setInt(1, min);
             stmt.setInt(2, max);
