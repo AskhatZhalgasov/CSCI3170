@@ -56,7 +56,6 @@ public class Passenger {
                 ResultSet res = stmtc.executeQuery();
                 res.next();
                 int count = res.getInt(1);
-                System.out.println(count);
                 if (count != 0) {
                     System.out.println("[ERROR] the passenger with this Id has open request");
                 } else
