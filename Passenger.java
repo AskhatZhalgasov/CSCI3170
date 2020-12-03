@@ -46,8 +46,27 @@ public class Passenger {
         int p_id, pnum, d_years;
         String start_loc, end_loc, model;
         String dd_years;
-        System.out.println("Please enter your ID.");
-        p_id = Main.getInt(this.in);
+        while (true){
+            System.out.println("Please enter your ID.");
+            p_id = Main.getInt(this.in);
+            PreparedStatement stmtc;
+            try {
+                stmtc = conn.prepareStatement("select count(case when passenger_id =" + p_id
+                        + " and taken = 0 then 1 else null end) as num from requests");
+                ResultSet res = stmtc.executeQuery();
+                res.next();
+                int count = res.getInt(1);
+                System.out.println(count);
+                if (count != 0) {
+                    System.out.println("[ERROR] the passenger with this Id has open request");
+                } else
+                    break;
+            }
+            catch (SQLException e) {
+                System.out.println("[ERROR] " + e);
+                System.exit(1);
+            }
+        }
         System.out.println("Please enter the number of passengers.");
         while (true)
         {
