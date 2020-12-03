@@ -22,27 +22,32 @@ public class Driver {
         System.out.println("4. Go back");
 
         while(true) {
-            System.out.println("Please enter[1-4]");
-            input = in.nextInt();
-            if (1 <= input && input <= 3) {
+
+            while(true) {
+                System.out.println("Please enter[1-4]");
+                input = Main.getInput(this.in);
+                if (1 <= input && input <= 3) {
+                    break;
+                } else {
+                    System.out.println("[ERROR] Invalid input.");
+                }
+            }
+            if (input == 1)
+            {
+                search_requests();
+            }
+            else if (input == 2)
+            {
+                take_request();
+            }
+            else if (input == 3)
+            {
+                finish_trip();
+            }
+            else {
                 break;
-            } else {
-                System.out.println("[ERROR] Invalid input.");
             }
         }
-        if (input == 1)
-        {
-            search_requests();
-        }
-        else if (input == 2)
-        {
-            take_request();
-        }
-        else if (input == 3)
-        {
-            finish_trip();
-        }
-
     }
 
      public static boolean isNullOrEmpty(String str) {

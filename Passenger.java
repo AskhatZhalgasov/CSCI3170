@@ -23,21 +23,24 @@ public class Passenger {
         System.out.println("2. Check trip records");
         System.out.println("3. Go back");
 
-        while (true) {
-            System.out.println("Please enter[1-3]");
-            input = in.nextInt();
-            if (1 <= input && input <= 3) {
-                break;
+        while(true) {
+            while (true) {
+                System.out.println("Please enter[1-3]");
+                input = Main.getInput(this.in);
+                if (1 <= input && input <= 3) {
+                    break;
+                } else {
+                    System.out.println("[ERROR] Invalid input.");
+                }
+            }
+            if (input == 1) {
+                make_request();
+            } else if (input == 2) {
+                check_trip();
             } else {
-                System.out.println("[ERROR] Invalid input.");
+                break;
             }
         }
-        if (input == 1) {
-            make_request();
-        } else if (input == 2) {
-            check_trip();
-        }
-
     }
 
     public void make_request() {

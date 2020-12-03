@@ -32,23 +32,27 @@ public class Administrator {
         System.out.println("5. Go back");
 
         while(true) {
-            System.out.println("Please enter[1-5]");
-            input = in.nextInt();
-            if (1 <= input && input <= 5) {
-                break;
-            } else {
-                System.out.println("[ERROR] Invalid input.");
+            while(true) {
+                System.out.println("Please enter[1-5]");
+                input = Main.getInput(this.in);
+                if (1 <= input && input <= 5) {
+                    break;
+                } else {
+                    System.out.println("[ERROR] Invalid input.");
+                }
             }
-        }
 
-        if (input == 1) {
-            createTables();
-        } else if (input == 2) {
-            deleteTables();
-        } else if (input == 3) {
-            loadData();
-        } else if (input == 4) {
-            checkData();
+            if (input == 1) {
+                createTables();
+            } else if (input == 2) {
+                deleteTables();
+            } else if (input == 3) {
+                loadData();
+            } else if (input == 4) {
+                checkData();
+            } else {
+                break;
+            }
         }
     }
 
@@ -69,8 +73,8 @@ public class Administrator {
                 stmts[i].execute();
             }
         } catch(SQLException e) {
-            System.out.println("[ERROR] " + e);
-            System.exit(1);
+            System.out.println("[ERROR] Tables already exist");
+            //System.exit(1);
         }
         System.out.println("Processing... Done! Tables are created!\n");
     }
@@ -191,7 +195,7 @@ public class Administrator {
     }
 
     private void checkData() {
-        String[] output = { "Vehicles:", "Passenger:", "Driver:", "Trip:", "Request:", "Taxi_Stop:" };
+        String[] output = { "Vehicle ", "Passenger ", "Driver ", "Trip ", "Request ", "Taxi_Stop " };
         try {
             PreparedStatement stmt;
             for (int i = 0; i < output.length; i++) {

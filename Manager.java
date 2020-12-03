@@ -25,21 +25,22 @@ public class Manager {
         System.out.println("2. Go back");
 
         while(true) {
-            System.out.println("Please enter[1-2]");
-            input = in.nextInt();
-            if (1 <= input && input <= 2) {
-                break;
-            } else {
-                System.out.println("[ERROR] Invalid input.");
+            while(true) {
+                System.out.println("Please enter[1-2]");
+                input = Main.getInput(this.in);
+                if (1 <= input && input <= 2) {
+                    break;
+                } else {
+                    System.out.println("[ERROR] Invalid input.");
+                }
             }
+
+            if (input == 1) {
+                findTrips();
+            } else if (input == 2) {
+                break;
+            } 
         }
-
-        if (input == 1) {
-            findTrips();
-        } else if (input == 2) {
-        } 
-
-    
 
     }
     private void findTrips() {

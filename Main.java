@@ -1,7 +1,22 @@
+import java.util.Scanner;
 import java.sql.*;
 
 public class Main {
     public static int req_id;
+
+    // sometimes we finish the programm due to timeout
+    public static int getInput(Scanner in) {
+        int result = 0;
+        try {
+            result = in.nextInt();
+            return result;
+        } catch(Exception e) {
+            System.out.println("Finishing due to empty input.");
+            System.exit(-1);
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         // Firstly, need to connect to the database 
         String dbAddress = "jdbc:mysql://projgw.cse.cuhk.edu.hk:2633/group14";
