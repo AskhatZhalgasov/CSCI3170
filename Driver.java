@@ -188,7 +188,8 @@ public class Driver {
             System.out.println("Do you wish to finish the trip");
             char answer = in.next().charAt(0);
             if(answer == 'y') {
-                PreparedStatement stmt_finish_ = conn.prepareStatement("update trips set finish_time = \"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\", fee = TIMESTAMPDIFF(MINUTE, \"" + start_time + "\",\"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\") where id = " + r_id + "");
+                String finish_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+                PreparedStatement stmt_finish_ = conn.prepareStatement("update trips set start_time = \"" + start_time + "\", finish_time = \"" + finish_time + "\", fee = TIMESTAMPDIFF(MINUTE, \"" + start_time + "\",\"" + finish_time + "\") where id = " + r_id + "");
                 stmt_finish_.execute();
                 PreparedStatement stmt_finish = conn.prepareStatement("select T.id, P.name, T.start_time, T.finish_time, T.fee from trips as T, passengers as P where T.id = " + r_id + " and T.passenger_id = P.id ");
                 //System.out.println("update trips set finish_time = \"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\", fee = TIMESTAMPDIFF(MINUTE, start_time, \"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\") where trips.id = " + r_id + "");

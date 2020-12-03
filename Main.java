@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.sql.*;
 
 public class Main {
-    public static int req_id;
 
     // sometimes we finish the programm due to timeout
     public static int getInt(Scanner in) {
