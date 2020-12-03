@@ -190,17 +190,20 @@ public class Driver {
             if(answer == 'y') {
                 PreparedStatement stmt_finish_ = conn.prepareStatement("update trips set finish_time = \"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\", fee = TIMESTAMPDIFF(MINUTE, \"" + start_time + "\",\"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\") where id = " + r_id + "");
                 stmt_finish_.execute();
-                PreparedStatement stmt_finish = conn.prepareStatement("select * from trips where id = 502");
+                PreparedStatement stmt_finish = conn.prepareStatement("select T.id, P.name, T.start_time, T.finish_time, T.fee from trips as T, passengers as P where T.id = " + r_id + " and T.passenger_id = P.id ");
                 //System.out.println("update trips set finish_time = \"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\", fee = TIMESTAMPDIFF(MINUTE, start_time, \"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\") where trips.id = " + r_id + "");
                 ResultSet x = stmt_finish.executeQuery();
                 ResultSetMetaData _rsmd = x.getMetaData();
                 int _columnsNumber = _rsmd.getColumnCount();
+                System.out.println("Trip ID, Passenger name, Start, End, Fee");
                 while(x.next()) {
                     for (int i = 1; i <= _columnsNumber; i++) {
+                    if (i > 1) System.out.print(",  ");
                     String _columnValue;              
                     _columnValue = x.getString(i);
-                    System.out.print(_columnValue + " ");
+                    System.out.print(_columnValue);
                     }
+                    System.out.println("");
                 }
             }
             //UPDATE `zz` SET `sa` = '2' WHERE `zz`.`sa` = 1
