@@ -20,11 +20,10 @@ public class Manager {
     }
 
     public void start() {
-        System.out.println("Manager, what would you like to do?");
-        System.out.println("1. Find trips");
-        System.out.println("2. Go back");
-
         while(true) {
+            System.out.println("Manager, what would you like to do?");
+            System.out.println("1. Find trips");
+            System.out.println("2. Go back");
             while(true) {
                 System.out.println("Please enter[1-2]");
                 input = Main.getInt(this.in);

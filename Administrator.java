@@ -24,14 +24,14 @@ public class Administrator {
     }
 
     public void start() {
-        System.out.println("Administrator, what would you like to do?");
-        System.out.println("1. Create tables");
-        System.out.println("2. Delete tables");
-        System.out.println("3. Load data");
-        System.out.println("4. Check data");
-        System.out.println("5. Go back");
 
         while(true) {
+            System.out.println("Administrator, what would you like to do?");
+            System.out.println("1. Create tables");
+            System.out.println("2. Delete tables");
+            System.out.println("3. Load data");
+            System.out.println("4. Check data");
+            System.out.println("5. Go back");
             while(true) {
                 System.out.println("Please enter[1-5]");
                 input = Main.getInt(this.in);

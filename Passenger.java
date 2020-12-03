@@ -18,12 +18,11 @@ public class Passenger {
     }
 
     public void start() {
-        System.out.println("Passenger, what would you like to do?");
-        System.out.println("1. Request a ride");
-        System.out.println("2. Check trip records");
-        System.out.println("3. Go back");
-
         while(true) {
+            System.out.println("Passenger, what would you like to do?");
+            System.out.println("1. Request a ride");
+            System.out.println("2. Check trip records");
+            System.out.println("3. Go back");
             while (true) {
                 System.out.println("Please enter[1-3]");
                 input = Main.getInt(this.in);
