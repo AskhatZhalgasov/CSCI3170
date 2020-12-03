@@ -15,14 +15,13 @@ public class Driver {
     }
 
     public void start() {
-        System.out.println("Driver, what would you like to do?");
-        System.out.println("1. Search requests");
-        System.out.println("2. Take a request");
-        System.out.println("3. Finish a trip");
-        System.out.println("4. Go back");
-
         while(true) {
 
+            System.out.println("Driver, what would you like to do?");
+            System.out.println("1. Search requests");
+            System.out.println("2. Take a request");
+            System.out.println("3. Finish a trip");
+            System.out.println("4. Go back");    
             while(true) {
                 System.out.println("Please enter[1-4]");
                 input = Main.getInt(this.in);
