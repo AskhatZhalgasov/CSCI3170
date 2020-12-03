@@ -26,7 +26,7 @@ public class Driver {
             while(true) {
                 System.out.println("Please enter[1-4]");
                 input = Main.getInt(this.in);
-                if (1 <= input && input <= 3) {
+                if (1 <= input && input <= 4) {
                     break;
                 } else {
                     System.out.println("[ERROR] Invalid input.");
@@ -68,7 +68,7 @@ public class Driver {
         try
         {
             //PreparedStatement stmt = conn.prepareStatement("select R.id, P.name, R.passengers, R.start_location, R.finish_location from requests as R, taxi_stops as TS, taxi_stops as TT, passengers as P, drivers as D, vehicles as V where D.id = " + d_id + " and D.vehicle_id = V.id and TS.name = R.start_location and (ABS(TS.x - " + start_loc_x + ") + ABS(TS.y - " + start_loc_y + ")) between 0 and " + max_distance + " and D.driving_years > R.driving_years and (R.model = \"null\" )");
-            PreparedStatement stmt = conn.prepareStatement("select R.id, P.name, R.passengers, R.start_location, R.finish_location from requests as R, taxi_stops as TS, passengers as P, drivers as D, vehicles as V where D.id = " + d_id + " and P.id = R.passenger_id and D.vehicle_id = V.id and TS.name = R.start_location and (ABS(TS.x - " + start_loc_x + ") + ABS(TS.y - " + start_loc_y + ")) between 0 and " + max_distance + " and D.driving_years > R.driving_years and (R.model is NULL or R.model like V.model)");          
+            PreparedStatement stmt = conn.prepareStatement("select R.id, P.name, R.passengers, R.start_location, R.finish_location from requests as R, taxi_stops as TS, passengers as P, drivers as D, vehicles as V where R.taken = 0 and D.id = " + d_id + " and P.id = R.passenger_id and D.vehicle_id = V.id and TS.name = R.start_location and (ABS(TS.x - " + start_loc_x + ") + ABS(TS.y - " + start_loc_y + ")) between 0 and " + max_distance + " and D.driving_years > R.driving_years and (R.model is NULL or R.model like V.model)");          
             //System.out.println("select R.id, P.name, R.passengers, R.start_location, R.finish_location from requests as R, taxi_stops as TS, taxi_stops as TT, passengers as P, drivers as D, vehicles as V where D.id = " + d_id + " and P.id = R.passenger_id and D.vehicle_id = V.id and TS.name = R.start_location and (ABS(TS.x - " + start_loc_x + ") + ABS(TS.y - " + start_loc_y + ")) between 0 and " + max_distance + " and D.driving_years > R.driving_years and (R.model = \"null\" or R.model = V.model )");
             //PreparedStatement stmt = conn.prepareStatement("select * from requests");
             ResultSet res = stmt.executeQuery();
@@ -136,7 +136,23 @@ public class Driver {
                 //                                                                                                                                                                                          2018-07-04 14:33:20
                 PreparedStatement stmt_tr = conn.prepareStatement("insert into trips (driver_id,passenger_id,start_time, start_location, finish_location, fee) values ("+ dr_id + "," + passenger_id + ",\"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\",\"" + start_location + "\",\"" + finish_location + "\", 0)");   
                 stmt_tr.execute();
-                System.out.println("The request was taken! Enjoy your trip");
+                PreparedStatement stmt_update_rq = conn.prepareStatement("update requests set taken = 1 where id = " + r_id);
+                stmt_update_rq.execute();
+                PreparedStatement stmt_search_trip = conn.prepareStatement("select T.id, P.name, T.start_time from trips as T, passengers as P where T.driver_id = " + d_id + " and T.passenger_id = " + passenger_id + " and T.passenger_id = P.id and TIMESTAMPDIFF(SECOND, T.start_time, \"" +new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + "\") between 0 and 180");
+                ResultSet search_trip_res = stmt_search_trip.executeQuery();
+                ResultSetMetaData rsmd_st = search_trip_res.getMetaData();
+                int st_columnsNumber = rsmd_st.getColumnCount();
+                System.out.println("Trip ID, Passenger name, Start");
+                while(search_trip_res.next()) {
+                    for (int i = 1; i <= st_columnsNumber; i++) {
+                        if (i > 1) System.out.print(",  ");
+                        String columnValue_;              
+                        columnValue_ = search_trip_res.getString(i);
+                        System.out.print(columnValue_);
+                    }
+                    System.out.println("");
+                } 
+                //System.out.println("The request was taken! Enjoy your trip");
             }
         }
         catch (SQLException e) 
