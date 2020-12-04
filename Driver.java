@@ -58,12 +58,12 @@ public class Driver {
     public void search_requests() {
         int d_id, start_loc_x, start_loc_y, max_distance;
         System.out.println("Please enter your ID.");
-        d_id = in.nextInt();
+        d_id = Main.getInt(this.in);
         System.out.println("Please enter the coordinates of your location.");
-        start_loc_x = in.nextInt();
-        start_loc_y = in.nextInt();
+        start_loc_x = Main.getInt(this.in);
+        start_loc_y = Main.getInt(this.in);
         System.out.println("Please enter the maximum distance from you to the passenger.");
-        max_distance = in.nextInt();
+        max_distance = Main.getInt(this.in);
         try
         {
             //PreparedStatement stmt = conn.prepareStatement("select R.id, P.name, R.passengers, R.start_location, R.finish_location from requests as R, taxi_stops as TS, taxi_stops as TT, passengers as P, drivers as D, vehicles as V where D.id = " + d_id + " and D.vehicle_id = V.id and TS.name = R.start_location and (ABS(TS.x - " + start_loc_x + ") + ABS(TS.y - " + start_loc_y + ")) between 0 and " + max_distance + " and D.driving_years > R.driving_years and (R.model = \"null\" )");
@@ -96,9 +96,9 @@ public class Driver {
     public void take_request() {
         int d_id, r_id;
         System.out.println("Please enter your ID.");
-        d_id = in.nextInt();
+        d_id = Main.getInt(this.in);
         System.out.println("Please enter the request id.");
-        r_id = in.nextInt();
+        r_id = Main.getInt(this.in);
         try
         {
             PreparedStatement stmt_dr, stmt_rq;
@@ -164,7 +164,7 @@ public class Driver {
     public void finish_trip() {
         int d_id;
         System.out.println("Please enter your ID.");
-        d_id = in.nextInt();
+        d_id = Main.getInt(this.in);
         try {
             PreparedStatement stmt = conn.prepareStatement("select id, passenger_id, start_time from trips where driver_id = " + d_id + " and finish_time is NULL");
             //PreparedStatement stmt = conn.prepareStatement("select * from trips where id = 501");

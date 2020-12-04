@@ -10,7 +10,7 @@ public class Main {
             result = in.nextInt();
             return result;
         } catch(Exception e) {
-            System.out.println("Finishing due to empty integer input.");
+            System.out.println("[ERROR] input is not integer.");
             System.exit(-1);
         }
         return -1;
@@ -21,7 +21,7 @@ public class Main {
             String result = in.nextLine();
             return result;
         } catch(Exception e) {
-            System.out.println("Finishing due to empty string input.");
+            System.out.println("[ERROR] input is not string.");
             System.exit(-1);
         }
         return null;

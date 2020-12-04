@@ -1,1 +1,1 @@
-zip submission.zip *.java
+zip 14.zip *.java README

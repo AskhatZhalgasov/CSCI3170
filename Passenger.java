@@ -1,4 +1,3 @@
-/*осталось проверить есть ли у пассажира открытый request и во время подсчета проверить дистанцию таксистов*/
 import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
@@ -70,7 +69,7 @@ public class Passenger {
         while (true)
         {
             pnum = Main.getInt(this.in);
-            if (pnum>8)
+            if (pnum>8 || pnum < 1)
                 System.out.println("[Error] Invalid number of passengers");
             else 
                 break;

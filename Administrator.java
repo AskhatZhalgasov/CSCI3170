@@ -103,7 +103,7 @@ public class Administrator {
             loadTripsData(folderPath + "/trips.csv");
             loadVehiclesData(folderPath + "/vehicles.csv");
         } catch(Exception e) {
-            System.out.println("[ERROR] " + e);
+            System.out.println("[ERROR] " + "could not load the data, probably data path is incorrect");
         }
 
         System.out.println("Processing...Data is loaded!\n");

@@ -46,15 +46,15 @@ public class Manager {
         int min, max;
         try{
             System.out.println("Please enter the minimum travelling distance");
-            min = in.nextInt();
+            min = Main.getInt(this.in);
             System.out.println("Please enter the maximum travelling distance");
-            max = in.nextInt();
+            max = Main.getInt(this.in);
         } catch(InputMismatchException e) {
             System.out.println("Input is not an int value"); 
             return;
         }
         if(min > max || max < min || min < 0 || max < 0) {
-            System.out.println("Please input the distances correctly");
+            System.out.println("[ERROR] Please input the distances correctly");
             return;
         }
         try {
