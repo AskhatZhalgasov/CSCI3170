@@ -12,11 +12,3 @@
 ```sh
     make run
 ```
-
-## TODOs
-* **Askhat**:
-    * N/A.
-* **Manu**:
-    * Finish the passenger functionality (`Passenger.java`).
-* **Sherali**:
-    * Start the manager and driver (see `Manager.java & Driver.java`)
